@@ -29,9 +29,9 @@ fn handle_connection(mut stream: TcpStream){
     let request_line = buf_reader.lines().next().unwrap().unwrap();
 
     let (statusline, filename) = if request_line == "GET / HTTP/1.1"{
-        ("HTTP/1.1 200 OK", "hello.html")
+        ("HTTP/1.1 200 OK", "pages/hello.html")
     } else{
-        ("HTTP/1.1 404 NOT FOUND", "404.html")
+        ("HTTP/1.1 404 NOT FOUND", "pages/404.html")
     };
     let contents = fs::read_to_string(filename).unwrap();
     let length = contents.len();
