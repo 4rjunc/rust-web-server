@@ -1,20 +1,18 @@
 use std::{
-    fs,
-    net::{TcpListener, TcpStream},
-    io::{prelude::*, BufReader},
-    thread,
-    time::Duration,
+    fs, io::{prelude::*, BufReader}, net::{TcpListener, TcpStream}, thread::{self}, time::Duration
 };
+use rust_web_server::ThreadPool;
 
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:7878").unwrap(); // .unwrap will stop the 
     // incase an error occur if the port is already binded or the port reuires admin
     // previlage
 
+    let pool = ThreadPool::new(4);
     for stream in listener.incoming(){
         let stream = stream.unwrap();
 
-        thread::spawn(|| {
+        pool.execute(|| {
         handle_connection(stream);
         });
     }
