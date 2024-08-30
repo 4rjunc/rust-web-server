@@ -1,4 +1,4 @@
-use std::{sync::mpsc, thread};
+use std::{sync::{ mpsc, Arc, Mutex}, thread};
 
 pub struct ThreadPool {
     workers: Vec<Worker>,
@@ -34,8 +34,10 @@ struct Worker{
 }
 
 impl Worker{
-    fn new(id: usize) -> Worker{
-        let thread = thread::spawn(|| {});
+    fn new(id: usize, receiver: Arc<Mutex<mpsc::Receiver<Job>>>) -> Worker{
+        let thread = thread::spawn(|| {
+            receiver;
+        });
 
         Worker { id, thread}
     }
